@@ -3,50 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>HMTP</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!--
+   여행자: 신혼여행을 가려고 하는 사람
+   목적: 행복한 신혼여행을 위한 계획 구체화
+   핵심 행동: 여행 계획 설정하기
+   정보순서: 계획-> 일정 -> 비용 
+    -->
     <header>
         <h1>Honey moon Travel Plan</h1>
         <p>정찬호와 임승현의 신혼여행을 위한 웹페이지</p>
+
+        <nav aria-label="주요메뉴">
+            <a href="#about">여행소개</a>
+            <a href="#features">여행계획</a>
+            <a href="#steps">여행방법</a>
+            <a href="#subscribe">여행 계획 받기</a>
+            </nav>
     </header>
-    <h2>여행소개</h2>
-    <h3>다카마쓰에서 보내는 행복한 신혼여행</h3>
 
-    <img src="assets/images/wedding.png" alt="웨딩 스냅을 찍은 찬호승현">
+    <main>
+        <section id="about"></section>
+        <h2>여행소개</h2>
+        <h3>다카마쓰에서 보내는 행복한 신혼여행</h3>
+    
+        <img src="assets/images/wedding.png" alt="웨딩 스냅을 찍은 찬호승현">
+        <p> 정찬호 임승현의 신혼여행에 대한 정보를 제공합니다.</p>
+        <p> 계획이 완료 되면 예산과 세부 일정들을 확인할 수 있습니다.</p>
 
-<h2>여행 계획</h2>
-        <ul>
-        <li>
-            <h3>일자별 여행계획</h3>
-            <P>계획한 여행계획을 확인하고 반복해서 수정합니다.</P>
-        </li>
-           
-        <li>
-            <h3>여행 테마</h3>
-            <p>신혼여행에 맞는 휴양과 관광을 즐깁니다.</p>
-        </li>
+        <section id="features"></section>
+        
+        <h2>여행 계획</h2>
+                <ul class ="features-list">
+                <li class="feature-card">
+                    <h3>일자별 여행계획</h3>
+                    <P>계획한 여행계획을 확인하고 반복해서 수정합니다.</P>
+                </li>
+                   
+                <li class="feature-card">
+                    <h3>여행 테마</h3>
+                    <p>신혼여행에 맞는 휴양과 관광을 즐깁니다.</p>
+                </li>
+        
+                <li class="feature-card">
+                    <h3>여행 컨텐츠</h3>
+                    <p>다카마쓰에서 즐길수 있는 다양한 컨텐츠들을 찾아봅니다.</p>
+                </li>
+            </ul>
+               <!-- 8페이지 에서 작성한 UX 계획 주석 -->
 
-        <li>
-            <h3>여행 컨텐츠</h3>
-            <p>다카마쓰에서 즐길수 있는 다양한 컨텐츠들을 찾아봅니다.</p>
-        </li>
-    </ul>
-       <!-- 8페이지 에서 작성한 UX 계획 주석 -->
+        <section id="steps"></section>
         <h2>여행 방법</h2>
-        <ol>
+         <ol>
             <li>다카마쓰행 비행기표를 예매합니다</li>
             <li>다카마쓰 숙소를 예매합니다</li>
             <li>아내가 좋아할 만한 맛집을 찾습니다</li>
             <li>섬들을 여행할 페리들을 확인합니다</li>
         </ol>
 
-        <h2>여행 계획 받기</h2>
-        <form>
+        <section id="subscribe"class="subscribe-card">
+            <h2>여행 계획 받기</h2>
+          <form>
             <label for="email">이메일</label>
             <input type="email" id="email" name="email">
             <button type ="submit">여행계획 신청하기</button>
-        </form>
+          </form>
+        </section>
+    </main>
+
+    <footer>
+        <small>@ 2026 신혼계획 구체화</small>
+    </footer>
+
 </body>
 
 <html>
