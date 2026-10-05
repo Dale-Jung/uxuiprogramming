@@ -9,9 +9,13 @@ body{
 header,
 main,
 footer{
+    /*좁은 화면에서도 사용가능한 너비에 맞춰 줄어듭니다. */
+    width: 100%;
+   /*넓은 화면에서도 콘텐츠는 1100px 보다 커지지 않습니다. */
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 img{
     display: block;
@@ -38,6 +42,9 @@ footer{
 
 nav{
     display: flex;
+    /*메뉴가 들어갈 자리가 부족하면 다음줄로 이동*/
+    flex-wrap:wrap;
+
     gap: 24px;
     margin-top: 24px;
 }
@@ -76,8 +83,15 @@ p{
     list-style-type: none;
     padding-left: 0;
     margin: 0;
+
+    display: grid;
+    /*들어갈 수 있는 만큼 열을 만들고
+      카드 넓이는 최소 260px 부터 남은 공간까지 사용한다.*/
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap:24px;
 }
 .feature-card{
+    min-width: 0;
     padding: 20px 24px;
     margin-bottom: 16px;
     border: 1px solid #dededa;
@@ -139,4 +153,56 @@ input:focus{
 
 button:active{
     transform: translate(1px);
+}
+
+@media (max-width: 768px){
+    body{
+        font-size: 36px;
+    }
+    header{
+        padding-top: 32px;
+        padding-bottom: 24px;
+    }
+
+    section{
+        margin-top: 48px;
+    }
+
+    h1{
+        font-size: 36px;
+    }
+    h2{
+        font-size: 28px;
+    }
+    /*가로 메뉴를 위에서 아래로 배치*/
+    nav{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    nav a{
+        /*링크 글자 주변에도 글자를 누를 수 있는 여백 추가*/
+        padding: 8px;
+    }
+    /*기능 카드를 한 열로 배치*/
+    .features-list{
+        grid-template-columns: 1fr;
+    }
+
+    /*이메일 입력창과 버튼도 한 열로 배치*/
+    form{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input,
+    button{
+        width: 100%;
+    }
+
+    button{
+        /*모바일에서도 버튼을 누르면 영역이 너무 낮아지지 않게 설정*/
+        min-height: 48px;
+    }
+    
 }
