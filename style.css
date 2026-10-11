@@ -120,7 +120,8 @@ form{
 
 input{
     flex: 1;
-    max-width: 0;
+    min-width: 0;
+    max-width: 100%;
     padding: 12px 18px;
     border: 1px solid #b8b7c5;
     border-radius: 10px;
@@ -204,5 +205,21 @@ button:active{
         /*모바일에서도 버튼을 누르면 영역이 너무 낮아지지 않게 설정*/
         min-height: 48px;
     }
-    
+    #subscribeMessage{
+        margin-top: 16px;
+        color : #555763;
+    }
 }
+
+    #subscribeMessage.is-success{
+        color: #245c3a;
+        background-color: #e7f7ed;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+    #subscribeButton:disabled{
+        color: #ffffff;
+        background-color: #a8a8b2;
+        cursor: not-allowed;
+    }
