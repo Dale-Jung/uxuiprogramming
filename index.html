@@ -39,26 +39,71 @@
         <p> 정찬호 임승현의 신혼여행에 대한 정보를 제공합니다.</p>
         <p> 계획이 완료 되면 예산과 세부 일정들을 확인할 수 있습니다.</p>
 
-        <section id="features"></section>
-        
+        <section id="features">
         <h2>여행 계획</h2>
-                <ul class ="features-list">
-                <li class="feature-card">
-                    <h3>일자별 여행계획</h3>
-                    <P>계획한 여행계획을 확인하고 반복해서 수정합니다.</P>
-                </li>
-                   
-                <li class="feature-card">
-                    <h3>여행 테마</h3>
-                    <p>신혼여행에 맞는 휴양과 관광을 즐깁니다.</p>
-                </li>
-        
-                <li class="feature-card">
-                    <h3>여행 컨텐츠</h3>
-                    <p>다카마쓰에서 즐길수 있는 다양한 컨텐츠들을 찾아봅니다.</p>
-                </li>
-            </ul>
-               <!-- 8페이지 에서 작성한 UX 계획 주석 -->
+               
+            <div class ="tabs" role="tablist" aria-label="여행 계획">
+                    <button
+                        id="tab-practice"
+                        class="tab is-active"    
+                        type="button"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="feature-practice"
+                        data-target="feature-practice">
+                        단계별 연습
+                    </button>
+                    
+                     <button
+                        id="tab-audience"
+                        class="tab is-active"    
+                        type="button"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="feature-audience"
+                        data-target="feature-audience">
+                        가상 여행자
+                    </button>
+                    
+                    <button
+                        id="tab-feedback"
+                        class="tab is-active"    
+                        type="button"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="feature-feedback"
+                        data-target="feature-feedback">
+                        계획 피드백
+                    </button>
+                </div>
+                
+                <div
+                    id="feature-practice"
+                    class="tab-panel is-active"
+                    role="tabpanel"
+                    aria-labelledby="tab-practice">
+                    <h3>단계별 준비</h3>
+                    <p>여행 계획을 선택하고 단계별로 나누어 계획할 수 있습니다.</p>
+                </div>
+
+                <div
+                    id="feature-audience"
+                    class="panel"
+                    role="tabpanel"
+                    aria-labelledby="tab-audience"
+                    hidden>
+                    <h3>가상 여행자</h3>
+                    <p>가상 여행자의 반응을 확인하며 실제 계획처럼 준비할 수 있습니다.</p>
+                </div>
+
+                <div
+                    id="feature-feedback"
+                    class="panel"
+                    role="tabpanel"
+                    aria-labelledby="tab-feedback"
+                    hidden>
+                    <h3>계획 피드백</h3>
+                    <p>여행 계획을 완료하면 가상 여행자의 피드백을 확인할 수 있습니다.</p>
 
         <section id="steps"></section>
         <h2>여행 방법</h2>
@@ -68,6 +113,38 @@
             <li>아내가 좋아할 만한 맛집을 찾습니다</li>
             <li>섬들을 여행할 페리들을 확인합니다</li>
         </ol>
+
+        <section id="event-practice">
+            <h2>여행 준비 설정</h2>
+
+            <div class="event-card">
+                <article class="event-card">
+                    <h3>화면 테마</h3>
+                    <button id="themeButton" type="button">다크 테마로 바꾸기</button>
+                </article>
+
+                <article class="event-card">
+                    <h3>여행자 정보</h3>
+                    <label for="nickname">여행자 이름: </label>
+                    <input type="text" id="nickname" maxlength="10">
+                    <p id="nicknameCount" aria-live="polite"> 0 / 10</p>
+                </article>
+
+                <article class="event-card">
+                    <h3>여행준비 동의</h3>
+                    <label class="agree-row"?>
+                        <input type="checkbox" id="agree">
+                        여행준비를 위한 정보수집에 동의합니다.
+                    </label>
+                    <p id="agreeMessage" aria-live="polite">
+                        동의 후 여행준비를 시작할 수 있습니다.
+                    </p>
+                    <button id="startButton" type="button" disabled>
+                        여행준비 시작하기
+                    </button>
+                </article>
+            </div>
+        </section>
 
         <section id="subscribe"class="subscribe-card">
             <h2>여행 계획 받기</h2>
