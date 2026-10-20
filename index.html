@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang= "Ko">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,10 @@
    여행자: 신혼여행을 가려고 하는 사람
    목적: 행복한 신혼여행을 위한 계획 구체화
    핵심 행동: 여행 계획 설정하기
-   정보순서: 계획-> 일정 -> 비용 
+   정보 순서: 여행 소개 → 주요 기능(여행 계획) → 이용 방법 → 여행 준비 설정 → 이메일 신청
+   사용자: 신혼여행을 준비하는 여행자
+   목적: 신혼여행 준비 과정과 계획을 한 페이지에서 쉽게 확인하기
+   핵심 행동: 여행 준비 순서를 확인하고 필요한 정보를 입력해 계획 신청하기 
     -->
     <header>
         <h1>Honey moon Travel Plan</h1>
@@ -31,13 +34,15 @@
     </header>
 
     <main>
-        <section id="about"></section>
+        <section id="about">
         <h2>여행소개</h2>
         <h3>다카마쓰에서 보내는 행복한 신혼여행</h3>
     
         <img src="assets/images/wedding.png" alt="웨딩 스냅을 찍은 찬호승현">
         <p> 정찬호 임승현의 신혼여행에 대한 정보를 제공합니다.</p>
         <p> 계획이 완료 되면 예산과 세부 일정들을 확인할 수 있습니다.</p>
+
+        </section>
 
         <section id="features">
         <h2>여행 계획</h2>
@@ -56,10 +61,10 @@
                     
                      <button
                         id="tab-audience"
-                        class="tab is-active"    
+                        class="tab"    
                         type="button"
                         role="tab"
-                        aria-selected="true"
+                        aria-selected="false"
                         aria-controls="feature-audience"
                         data-target="feature-audience">
                         가상 여행자
@@ -67,10 +72,10 @@
                     
                     <button
                         id="tab-feedback"
-                        class="tab is-active"    
+                        class="tab"    
                         type="button"
                         role="tab"
-                        aria-selected="true"
+                        aria-selected="false"
                         aria-controls="feature-feedback"
                         data-target="feature-feedback">
                         계획 피드백
@@ -79,7 +84,7 @@
                 
                 <div
                     id="feature-practice"
-                    class="tab-panel is-active"
+                    class="panel is-active"
                     role="tabpanel"
                     aria-labelledby="tab-practice">
                     <h3>단계별 준비</h3>
@@ -104,8 +109,10 @@
                     hidden>
                     <h3>계획 피드백</h3>
                     <p>여행 계획을 완료하면 가상 여행자의 피드백을 확인할 수 있습니다.</p>
+                </div>
+        </section>
 
-        <section id="steps"></section>
+        <section id="steps">
         <h2>여행 방법</h2>
          <ol>
             <li>다카마쓰행 비행기표를 예매합니다</li>
@@ -113,11 +120,12 @@
             <li>아내가 좋아할 만한 맛집을 찾습니다</li>
             <li>섬들을 여행할 페리들을 확인합니다</li>
         </ol>
+        </section>
 
         <section id="event-practice">
             <h2>여행 준비 설정</h2>
 
-            <div class="event-card">
+            <div class="event-grid">
                 <article class="event-card">
                     <h3>화면 테마</h3>
                     <button id="themeButton" type="button">다크 테마로 바꾸기</button>
@@ -132,7 +140,7 @@
 
                 <article class="event-card">
                     <h3>여행준비 동의</h3>
-                    <label class="agree-row"?>
+                    <label class="agree-row">
                         <input type="checkbox" id="agree">
                         여행준비를 위한 정보수집에 동의합니다.
                     </label>
@@ -168,4 +176,4 @@
 
 </body>
 
-<html>
+</html>

@@ -215,14 +215,14 @@ body.dark{
     background-color: #20212a;
 }
 
-body.dark p
+body.dark p,
 body.dark nav a{
     color: #d8b8e2;
 }
 
-body.dark.feature-card
-body.dark.event-card
-body.dark.subscribe-card{
+body.dark .feature-card,
+body.dark .event-card,
+body.dark .subscribe-card{
     background-color: #50515f;
     border-color: #2d2e38;
 }
@@ -247,7 +247,7 @@ body.dark.subscribe-card{
 }
 
 .tab{
-    clolr: #5b5870;
+    color: #5b5870;
     background-color: #ffffff;
     border: 1px solid #deddea;
 }
@@ -276,18 +276,18 @@ body.dark.subscribe-card{
     display:none;
 }
 
-body,dark.tab{
+body.dark .tab{
     color: #d8b8e2;
     background-color: #2d2e38;
     border-color: #50515f;
 }
 
-body.dark.tab.is-active{
+body.dark .tab.is-active{
     color: #b9b5ff;
     border-color: #b8b5ff;
 }
 
-body.dark.panel{
+body.dark .panel{
     background-color:#2d2e38;
     border-color: #50515f;
 }
@@ -357,3 +357,7 @@ body.dark.panel{
         text-align: left;
     }
 }
+/* 페이지 내부 메뉴와 키보드 접근성 */
+html { scroll-behavior: smooth; }
+nav a:focus-visible { outline: 3px solid #635bff; outline-offset: 4px; }
+#subscribeMessage.is-success { color: #245c3a; }

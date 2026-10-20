@@ -49,7 +49,7 @@ subscribeForm.addEventListener("submit", handleSubscribe);
 const themeButton = document.querySelector("#themeButton");
 const nicknameInput = document.querySelector("#nickname");
 const nicknameCount = document.querySelector("#nicknameCount");
-const agreeCheck = document.querySelector("#agreeCheck");
+const agreeCheck = document.querySelector("#agree");
 const agreeMessage = document.querySelector("#agreeMessage");
 const startButton = document.querySelector("#startButton");
 
@@ -102,10 +102,10 @@ function resetTabsAndPanels(){
 
 function activateTab(clickedTab){
     const targetSelector = clickedTab.dataset.target;
-    const targetPanel = document.querySelector(targetSelector);
+    const targetPanel = document.getElementById(targetSelector);
 
-    clickedTab.classList.add("is-activate");
-    clickedTab.setAttribute("aria-selected","ture");
+    clickedTab.classList.add("is-active");
+    clickedTab.setAttribute("aria-selected","true");
 
     targetPanel.classList.add("is-active");
     targetPanel.hidden = false;
@@ -119,3 +119,9 @@ function handleTabClick(event){
 tabs.forEach(function(tab){
     tab.addEventListener("click", handleTabClick);
 })
+startButton.addEventListener("click", function () {
+    if (agreeCheck.checked) {
+        agreeMessage.textContent = "여행준비를 시작했습니다.";
+        agreeMessage.classList.add("is-ready");
+    }
+});
