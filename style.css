@@ -307,7 +307,8 @@ body.dark .panel{
     }
 
     h1{
-        font-size: 36px;
+        font-size: clamp(26px, 7vw, 32px);
+        overflow-wrap: anywhere;
     }
     h2{
         font-size: 28px;
@@ -336,6 +337,7 @@ body.dark .panel{
     input,
     button{
         width: 100%;
+        font-size: 16px;
     }
 
     button{
