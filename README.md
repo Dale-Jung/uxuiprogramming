@@ -1,4 +1,8 @@
-# Honeymoon Travel — 신혼여행 준비 계획 설정
+# Honeymoon Travel — 신혼여행 준비 계획 설정\
+
+## 제출란 (26.10.23부 추가)
+1. GitHub Repository URL: https://github.com/Dale-Jung/uxuiprogramming
+2. Published Website URL: https://dale-jung.github.io/uxuiprogramming/
 
 ## 사용자와 목표
 - 사용자: 다카마쓰 신혼여행을 준비하는 예비부부
@@ -106,3 +110,4 @@
 저장 목록은 현재 브라우저 페이지의 메모리에만 보관한다. 새로고침·탭 닫기 후에는 남지 않는다.
 localStorage나 서버에 영구 저장하는 기능은 이번 구현 범위에 포함하지 않았다.
 이메일은 실제 발송하지 않으며 예산 계산·세부 일정 생성·질문 자동 생성·자동 피드백도 구현 범위에 포함하지 않았다.
+
