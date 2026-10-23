@@ -436,3 +436,53 @@ body.dark .training-flow{
 html { scroll-behavior: smooth; }
 nav a:focus-visible { outline: 3px solid #635bff; outline-offset: 4px; }
 #subscribeMessage.is-success { color: #245c3a; }
+
+/* 중간고사 추가: 저장 목록, 상세 보기, 삭제 확인 */
+.saved-plans {
+    padding: 24px;
+    border: 1px solid #dededa;
+    border-radius: 12px;
+    background: #f4f3ff;
+}
+.saved-plan-list { list-style: none; padding: 0; display: grid; gap: 16px; }
+.saved-plan-card, .saved-plan-detail {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #deddea;
+    border-radius: 12px;
+    background: #fff;
+    overflow-wrap: anywhere;
+}
+.saved-plan-card h3 { margin-top: 0; }
+.saved-plan-actions, #delete-plan-dialog .dialog-actions {
+    display: flex; flex-wrap: wrap; gap: 12px;
+}
+.saved-plan-actions button, #save-plan-button { min-height: 44px; }
+.delete-plan-button { background: #9d243d; }
+.delete-plan-button:hover { background: #7d1a30; }
+.saved-plans a, .complete-step a { color: #4b43db; font-weight: 700; }
+.saved-plan-detail { margin-top: 24px; }
+.saved-plan-detail[hidden] { display: none; }
+.saved-plan-detail dt { font-weight: 700; }
+.saved-plan-detail dd { margin: 4px 0 16px; }
+#save-plan-message, #saved-list-message { overflow-wrap: anywhere; }
+.summary-list strong { min-width: 0; overflow-wrap: anywhere; }
+#delete-plan-dialog {
+    width: min(520px, calc(100% - 32px));
+    padding: 24px; border: 1px solid #deddea; border-radius: 12px;
+    color: #292a31; background: #fff;
+}
+#delete-plan-dialog::backdrop { background: rgba(30,20,39,0.6); }
+body.dark .saved-plans, body.dark .saved-plan-card,
+body.dark .saved-plan-detail, body.dark #delete-plan-dialog {
+    color: #f4f4f8; background: #2d2e38; border-color: #50515f;
+}
+body.dark h2, body.dark .progress_item.is-active { color: #c5c1ff; }
+body.dark .saved-plans a, body.dark .complete-step a { color: #c5c1ff; }
+body.dark #agreeMessage { color: #292a31; }
+body.dark #agreeMessage.is-ready { color: #245c3a; }
+body.dark .error-message { color: #ffd1dc; }
+@media (max-width: 768px) {
+    .saved-plans { padding: 20px; }
+    .saved-plan-actions, #delete-plan-dialog .dialog-actions { flex-direction: column; }
+}
