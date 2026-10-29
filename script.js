@@ -130,6 +130,7 @@ const durationRange = document.querySelector("#duration-range");
 const durationValue = document.querySelector("#duration-value");
 const qnaOption = document.querySelector("#qna-option");
 const qnaOptions = document.querySelector("#qna-options");
+const qnaInputs = document.querySelectorAll('input[name="qna-count"]')
 const optionPrev = document.querySelector("#option-prev");
 const optionNext = document.querySelector("#option-next");
 const summaryPrev = document.querySelector("#summary-prev");
@@ -140,11 +141,24 @@ const summaryDuration = document.querySelector("#summary-duration");
 const summaryQna = document.querySelector("#summary-qna")
 const durationValues = ["3","5","10"];
 
+// 09주차 교안 15~16쪽: 하나의 form에서 검증과 제출 상태를 관리합니다.
+const planForm = document.querySelector("#plan-form");
+const titleField = document.querySelector("#title-field");
+const titleHelp = document.querySelector("#title-help");
+const titleCount = document.querySelector("#title-count");
+const planSubmitMessage = document.querySelector("#plan-submit-message");
+const submissionStorageKey = "honeymoon-travel:last-submission:v1";
+let currentStep = 0;
+let submitState = "idle";
+let isSubmitting = false;
+
 const formData = {
     title: "", duration: "5", qna: false, qnaCount: "2"
 };
 
 function showStep(index){
+    currentStep = index;
+    if (index !== 3 && submitState === "success") setSubmitState("idle");
     if (index !== 3) {
         completedPlan = null;
         document.querySelector("#save-plan-message").textContent = "";
@@ -186,51 +200,156 @@ recordingConfirm.addEventListener("click",()=>{
     titleInput.focus();
 })
     
-function validateTitle(){
-    const value = titleInput.value.trim();
-    if (!value){
-        titleError.textContent = "여행 제목을 입력해주세요"
-        titleInput.classList.add("has-error");
-        titleInput.focus();
-        return false;
-    }
+// 교안 14쪽: 검증과 오류 표시를 분리합니다.
+function showError(message) {
+    titleError.textContent = message;
+    titleInput.setAttribute("aria-invalid", "true");
+    titleInput.classList.add("has-error");
+    titleField.classList.add("is-error");
+    titleField.classList.remove("is-valid");
+    return false;
+}
+
+function clearError() {
     titleError.textContent = "";
+    titleInput.removeAttribute("aria-invalid");
     titleInput.classList.remove("has-error");
+    titleField.classList.remove("is-error");
+}
+
+function validateTitle() {
+    const value = titleInput.value.trim();
+    if (!value) return showError("여행 제목을 입력해 주세요. 예: 다카마쓰 신혼여행");
+    if (value.length < 2) return showError("여행 제목을 앞뒤 공백 없이 2자 이상 입력해 주세요.");
+    if (titleInput.value.length > 60) return showError("여행 제목을 60자 이하로 줄여 주세요.");
+    clearError();
     formData.title = value;
     return true;
 }
 
-titleNext.addEventListener("click", ()=> {
-    if(!validateTitle()) return;
+// 교안 10쪽: 글자 수는 원래 값, 최소 길이는 trim()한 값으로 검사합니다.
+function updateTitleState() {
+    const length = titleInput.value.length;
+    const ok = titleInput.value.trim().length >= 2 && length <= 60;
+    titleCount.textContent = length + " / 60자";
+    titleHelp.textContent = ok
+        ? "입력 조건을 충족했습니다."
+        : "앞뒤 공백을 제외하고 2자 이상, 전체 60자 이하로 입력해 주세요.";
+    titleField.classList.toggle("is-valid", ok);
+    if (titleInput.getAttribute("aria-invalid") === "true") validateTitle();
+}
+titleInput.addEventListener("input", updateTitleState);
+updateTitleState();
+
+titleNext.addEventListener("click", () => {
+    if (!validateTitle()) {
+        titleInput.focus();
+        return;
+    }
     showStep(1);
-})
+});
 
 durationRange.addEventListener("input", () =>{
     durationValue.value = durationValues[durationRange.value] + "분";
-});
-qnaOption.addEventListener("change", () => {
-    qnaOptions.hidden = !qnaOption.checked;
+    document.querySelector("#duration-error").textContent = "";
+    durationRange.removeAttribute("aria-invalid");
 });
 
+function syncQnaOptions(){
+    const open = qnaOption.checked;
+    qnaOption.setAttribute("aria-expanded",String(open));
+    if (!open) {
+        document.querySelector("#qna-error").textContent = "";
+        qnaOption.removeAttribute("aria-invalid");
+    }
+    qnaOptions.hidden = !open;
+    qnaOptions.disabled = !open || isSubmitting;
+    qnaInputs.forEach((input) => {
+        input.disabled = !open || isSubmitting;
+    });
+}
+
+qnaOption.addEventListener("change", syncQnaOptions);
+qnaInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+        document.querySelector("#qna-error").textContent = "";
+        qnaOption.removeAttribute("aria-invalid");
+    });
+});
+syncQnaOptions();
 optionPrev.addEventListener("click", () => showStep(0));
-optionNext.addEventListener("click", () => {
-    formData.duration = durationValues[durationRange.value];
+function readPlanOptions() {
+    const duration = durationValues[durationRange.value];
+    const durationError = document.querySelector("#duration-error");
+    const qnaError = document.querySelector("#qna-error");
+    durationError.textContent = "";
+    qnaError.textContent = "";
+    durationRange.removeAttribute("aria-invalid");
+    qnaOption.removeAttribute("aria-invalid");
+    if (!duration) {
+        durationError.textContent = "준비 시간을 3분, 5분, 10분 중 다시 선택해 주세요.";
+        durationRange.setAttribute("aria-invalid", "true");
+        return false;
+    }
+    const count = document.querySelector('input[name="qna-count"]:checked');
+    if (qnaOption.checked && (!count || !["1", "2", "3"].includes(count.value))) {
+        qnaError.textContent = "여행 질문 수를 1개, 2개, 3개 중 선택해 주세요.";
+        qnaOption.setAttribute("aria-invalid", "true");
+        return false;
+    }
+    formData.duration = duration;
     formData.qna = qnaOption.checked;
-    const count = document.querySelector('input[name=qna-count]:checked');
-    formData.qnaCount = count.value;
+    formData.qnaCount = qnaOption.checked ? count.value : "2";
+    return true;
+}
+
+function updatePlanSummary() {
     summaryTitle.textContent = formData.title;
-    summaryDuration.textContent= formData.duration +"분";
+    summaryDuration.textContent = formData.duration + "분";
     summaryQna.textContent = formData.qna ? formData.qnaCount + "개 포함" : "미포함";
+}
+
+optionNext.addEventListener("click", () => {
+    if (!validateTitle()) {
+        showStep(0);
+        titleInput.focus();
+        return;
+    }
+    if (!readPlanOptions()) {
+        planForm.querySelector('[aria-invalid="true"]')?.focus();
+        return;
+    }
+    updatePlanSummary();
     showStep(2);
 });
-
 summaryPrev.addEventListener("click", () => showStep(1));
-finishButton.addEventListener("click", () => {
-    // 복사본을 만들어 이후 입력을 바꿔도 완료한 결과가 바뀌지 않게 합니다.
-    completedPlan = { ...formData };
-    document.querySelector("#save-plan-message").textContent = "완료한 계획을 목록에 저장할 수 있습니다.";
-    showStep(3);
+planForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (isSubmitting || submitState === "success") return;
+    if (!validateTitle()) {
+        showStep(0);
+        setSubmitState("invalid");
+        planForm.querySelector('[aria-invalid="true"]')?.focus();
+        return;
+    }
+    if (!readPlanOptions()) {
+        showStep(1);
+        setSubmitState("invalid");
+        planForm.querySelector('[aria-invalid="true"]')?.focus();
+        return;
+    }
+    updatePlanSummary();
+    if (currentStep !== 2) {
+        showStep(2);
+        planSubmitMessage.textContent = "내용을 확인한 뒤 '여행 준비 계획 제출하기'를 눌러 주세요.";
+        finishButton.focus();
+        return;
+    }
+    const data = new FormData(planForm);
+    setSubmitState("loading");
+    savePlan(data);
 });
+
 restartButton.addEventListener("click", () =>{
     formData.title = "";
     formData.duration = "5";
@@ -238,16 +357,24 @@ restartButton.addEventListener("click", () =>{
     formData.qnaCount = "2";
     titleInput.value = "";
     titleError.textContent = "";
-    titleInput.classList.remove("has-error");
+    clearError();
+    titleField.classList.remove("is-valid");
+    updateTitleState();
+    setSubmitState("idle");
+    document.querySelector("#duration-error").textContent = "";
+    document.querySelector("#qna-error").textContent = "";
+    durationRange.removeAttribute("aria-invalid");
+    qnaOption.removeAttribute("aria-invalid");
     durationRange.value = "1";
     durationValue.value = "5분";
     qnaOption.checked = false;
-    qnaOptions.hidden = true;
+    syncQnaOptions();
     document.querySelector('input[name="qna-count"][value="2"]').checked = true;
     summaryTitle.textContent = "";
     summaryDuration.textContent = "";
     summaryQna.textContent= "";
     showStep(0);
+    titleInput.focus();
 });
 
 
@@ -272,7 +399,6 @@ function renderSavedPlans() {
         const item = document.createElement("li");
         item.className = "saved-plan-card";
         const title = document.createElement("h3");
-        // 사용자가 적은 제목을 HTML로 해석하지 않고 글자로 표시합니다.
         title.textContent = plan.title;
         const summary = document.createElement("p");
         summary.textContent = "준비 " + plan.duration + "분 · 여행 질문 " +
@@ -303,9 +429,6 @@ document.querySelector("#save-plan-button").addEventListener("click", function()
         savePlanMessage.textContent = "먼저 여행 준비 설정을 완료해 주세요.";
         return;
     }
-
-    // 이름과 실제 준비 조건이 같으면 같은 계획으로 봅니다.
-    // 질문 미포함일 때는 숨겨진 질문 수를 비교하지 않습니다.
     const duplicate = savedPlans.some(function(plan) {
         return plan.title === completedPlan.title &&
             plan.duration === completedPlan.duration &&
@@ -396,3 +519,76 @@ document.querySelector("#delete-plan-confirm").addEventListener("click", functio
 });
 document.querySelector("#saved-plans-title").tabIndex = -1;
 renderSavedPlans();
+
+function setSubmitState(state) {
+    submitState = state;
+    isSubmitting = state === "loading";
+    planForm.setAttribute("aria-busy", String(isSubmitting));
+    startButton.disabled = isSubmitting || !agreeCheck.checked;
+    agreeCheck.disabled = isSubmitting;
+    planForm.dataset.submitState = state;
+    planForm.querySelectorAll("input, button").forEach((control) => {
+        control.disabled = isSubmitting;
+    });
+    syncQnaOptions();
+    finishButton.disabled = isSubmitting || state === "success";
+    finishButton.textContent = isSubmitting ? "저장 중…" :
+        state === "error" ? "같은 내용으로 다시 시도하기" :
+        state === "success" ? "제출 완료" : "여행 준비 계획 제출하기";
+    const messages = {
+        idle: "입력과 조건을 확인한 뒤 마지막 단계에서 제출해 주세요.",
+        invalid: "입력한 내용을 확인해 주세요. 표시된 오류를 고친 뒤 계속할 수 있습니다.",
+        loading: "여행 준비 계획을 이 브라우저에 저장하고 있습니다.",
+        success: "여행 준비 계획 제출이 완료되었습니다. 목록에 추가하거나 다시 작성할 수 있습니다.",
+        error: "브라우저 저장에 실패했습니다. 입력은 유지됩니다. 저장 공간이나 사이트 저장 권한을 확인한 뒤 다시 시도해 주세요."
+    };
+    planSubmitMessage.textContent = messages[state];
+}
+function savePlan(data) {
+    const submittedPlan = {
+        title: String(data.get("travelTitle")).trim(),
+        duration: durationValues[data.get("duration")],
+        qna: data.get("qna") === "included",
+        qnaCount: data.has("qna-count") ? String(data.get("qna-count")) : "2"
+    };
+    setTimeout(() => {
+        try {
+           
+            localStorage.setItem(submissionStorageKey, JSON.stringify(submittedPlan));
+            completedPlan = { ...submittedPlan };
+            showLastSubmission(submittedPlan);
+            setSubmitState("success");
+            document.querySelector("#save-plan-message").textContent = "완료한 계획을 현재 페이지의 목록에도 추가할 수 있습니다.";
+            showStep(3);
+            const heading = flowSteps[3].querySelector("h3");
+            heading.tabIndex = -1;
+            heading.focus();
+        } catch (error) {
+            setSubmitState("error");
+            finishButton.focus();
+        }
+    }, 600);
+}
+
+function showLastSubmission(plan) {
+    document.querySelector("#last-submission").hidden = false;
+    document.querySelector("#last-submission-summary").textContent =
+        plan.title + " · 준비 " + plan.duration + "분 · 여행 질문 " +
+        (plan.qna ? plan.qnaCount + "개 포함" : "미포함");
+}
+
+function loadLastSubmission() {
+    try {
+        const raw = localStorage.getItem(submissionStorageKey);
+        if (!raw) return;
+        const plan = JSON.parse(raw);
+        if (!plan || typeof plan.title !== "string" || plan.title.trim().length < 2 ||
+            plan.title.length > 60 || !durationValues.includes(plan.duration) ||
+            typeof plan.qna !== "boolean" ||
+            (plan.qna && !["1", "2", "3"].includes(plan.qnaCount))) return;
+        showLastSubmission(plan);
+    } catch (error) {
+    }
+}
+setSubmitState("idle");
+loadLastSubmission();

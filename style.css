@@ -9,9 +9,7 @@ body{
 header,
 main,
 footer{
-    /*좁은 화면에서도 사용가능한 너비에 맞춰 줄어듭니다. */
     width: 100%;
-   /*넓은 화면에서도 콘텐츠는 1100px 보다 커지지 않습니다. */
     max-width: 1100px;
     margin: 0 auto;
     padding-left: 24px;
@@ -42,9 +40,7 @@ footer{
 
 nav{
     display: flex;
-    /*메뉴가 들어갈 자리가 부족하면 다음줄로 이동*/
     flex-wrap:wrap;
-
     gap: 24px;
     margin-top: 24px;
 }
@@ -85,8 +81,6 @@ p{
     margin: 0;
 
     display: grid;
-    /*들어갈 수 있는 만큼 열을 만들고
-      카드 넓이는 최소 260px 부터 남은 공간까지 사용한다.*/
     grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
     gap:24px;
 }
@@ -356,7 +350,6 @@ body.dark .training-flow{
     border-color: #2d2e38;
 }
 
-/* 웹페이지가 표시되는 가로 폭이 768px 이하일 때만 적용 */
 @media (max-width: 768px){
     body{
         font-size: 16px;
@@ -377,22 +370,18 @@ body.dark .training-flow{
     h2{
         font-size: 28px;
     }
-    /*가로 메뉴를 위에서 아래로 배치*/
     nav{
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
     }
     nav a{
-        /*링크 글자 주변에도 글자를 누를 수 있는 여백 추가*/
         padding: 8px;
     }
-    /*기능 카드를 한 열로 배치*/
     .features-list{
         grid-template-columns: 1fr;
     }
 
-    /*이메일 입력창과 버튼도 한 열로 배치*/
     form{
         flex-direction: column;
         align-items: stretch;
@@ -405,7 +394,7 @@ body.dark .training-flow{
     }
 
     button{
-        /*모바일에서도 버튼을 누르면 영역이 너무 낮아지지 않게 설정*/
+
         min-height: 48px;
     }
     #subscribeMessage{
@@ -431,8 +420,6 @@ body.dark .training-flow{
     .training-flow input[type="checkbox"],
     .training-flow input[type="radio"]{width:auto;}
 }
-
-/* 페이지 내부 메뉴와 키보드 접근성 */
 html { scroll-behavior: smooth; }
 nav a:focus-visible { outline: 3px solid #635bff; outline-offset: 4px; }
 #subscribeMessage.is-success { color: #245c3a; }
@@ -486,3 +473,50 @@ body.dark .error-message { color: #ffd1dc; }
     .saved-plans { padding: 20px; }
     .saved-plan-actions, #delete-plan-dialog .dialog-actions { flex-direction: column; }
 }
+
+#plan-form {
+    display: block;
+}
+#plan-form .form-field { min-width: 0; }
+#plan-form #presentation-title { display: block; width: 100%; margin-top: 8px; }
+#plan-form .field-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+#plan-form .field-meta p { margin: 8px 0; font-size: 0.9em; }
+#title-count { white-space: nowrap; }
+#plan-form .error-message { min-height: 24px; margin: 4px 0 12px; }
+#presentation-title:focus-visible { outline: 3px solid #89a7ff; outline-offset: 2px; }
+#title-field.is-valid input { border-color: #16805d; }
+#title-field.is-valid #title-help { color: #16634b; }
+#title-field.is-error input { border-color: #9d243d; }
+#plan-form #duration-value { display: block; font-weight: 700; }
+#plan-form fieldset { min-width: 0; border: 1px solid #b8b7c5; border-radius: 10px; }
+#plan-form fieldset label { display: inline-flex; align-items: center; gap: 6px; margin-right: 16px; }
+#plan-submit-message {
+    padding: 12px;
+    border-radius: 10px;
+    background: #ecebf2;
+    color: #454052;
+    overflow-wrap: anywhere;
+}
+#plan-form[data-submit-state="success"] #plan-submit-message { color: #245c3a; background: #e7f7ed; }
+#plan-form[data-submit-state="error"] #plan-submit-message,
+#plan-form[data-submit-state="invalid"] #plan-submit-message { color: #8c1e35; background: #fff0f3; }
+#plan-form[data-submit-state="loading"] #plan-submit-message { font-weight: 700; }
+#plan-form button:disabled { color: #454052; background: #d4d1e1; cursor: not-allowed; transform: none; }
+#last-submission[hidden] { display: none; }
+#last-submission-summary { overflow-wrap: anywhere; font-weight: 700; }
+body.dark #title-field.is-valid #title-help { color: #a6ebd0; }
+body.dark #plan-form .error-message { color: #ffd1dc; }
+body.dark #plan-form fieldset { border-color: #a8a8b2; }
+@media (max-width: 768px) {
+    #plan-form .field-meta { flex-direction: column; gap: 0; }
+    #plan-form fieldset label { display: flex; margin: 8px 0; }
+    #plan-form .complete-step button { margin-top: 12px; }
+}
+
+.training-flow .progress { gap: 12px; }
